@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, FlatList, Text, TextInput, Button, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import { CheckBox } from '@rneui/themed';
 
 const styles = StyleSheet.create({
   container: {
