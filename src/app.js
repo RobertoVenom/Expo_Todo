@@ -1,86 +1,81 @@
 import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, FlatList, Text, TextInput, Button, View } from 'react-native';
-import { CheckBox } from 'react-native-elements';
-import { CheckBox } from '@rneui/themed';
+import { CheckBox } from '@rneui/themed';  // Import CheckBox from React Native Elements
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: Platform.OS === 'android' ? 25 : 0,
-    paddingHorizontal: 10,
   },
-  taskText: {
-    fontSize: 18,
-    marginLeft: 10,
-  },
-  taskCompleted: {
-    textDecorationLine: 'line-through',
-    textDecorationStyle: 'solid',
-    color: 'gray',
-  },
-  taskContainer: {
+  task: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 10,
+  },
+  taskText: {
+    marginLeft: 10,
+    fontSize: 18,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
+    margin: 20,
   },
   input: {
+    height: 40,
+    borderColor: '#ccc',
     borderWidth: 1,
-    padding: 10,
-    flex: 1,
     marginRight: 10,
+    flex: 1,
+    paddingLeft: 10,
+  },
+  button: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 5,
   },
 });
 
 export default function App() {
-  // State to store the list of tasks
   const [tasks, setTasks] = useState([
-    { key: '1', description: 'Buy some Foods', completed: false },
-    { key: '2', description: 'Attend the Bowling Class', completed: false },
-    { key: '3', description: 'Clean my Room', completed: false },
+    { id: '1', description: 'Build a fun schedule', completed: false },
+    { id: '2', description: 'Complete Assignment', completed: false },
   ]);
-  
-  // State to handle new task input
   const [newTask, setNewTask] = useState('');
 
-  // Toggle task completion status
-  const toggleTaskCompletion = (key) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.key === key ? { ...task, completed: !task.completed } : task
-      )
+  // Toggle task completion
+  const toggleTaskCompletion = (taskId) => {
+    const updatedTasks = tasks.map(task =>
+      task.id === taskId ? { ...task, completed: !task.completed } : task
     );
+    setTasks(updatedTasks);
   };
 
-  // Add a new task to the list
+  // Add new task
   const addTask = () => {
-    if (newTask.trim()) {
-      const newTaskObj = {
-        key: (tasks.length + 1).toString(),
+    if (newTask.trim() !== '') {
+      const newTaskObject = {
+        id: (tasks.length + 1).toString(),
         description: newTask,
         completed: false,
       };
-      setTasks((prevTasks) => [...prevTasks, newTaskObj]);
-      setNewTask('');
+      setTasks([...tasks, newTaskObject]);
+      setNewTask('');  // Clear input field
     }
   };
 
-  // Render individual task item
+  // Render each task in the FlatList
   const renderItem = ({ item }) => (
-    <View style={styles.taskContainer}>
+    <View style={styles.task}>
       <CheckBox
         checked={item.completed}
-        onPress={() => toggleTaskCompletion(item.key)}
+        onPress={() => toggleTaskCompletion(item.id)}
       />
       <Text
         style={[
           styles.taskText,
-          item.completed ? styles.taskCompleted : null,
+          item.completed && { textDecorationLine: 'line-through', textDecorationStyle: 'solid' },
         ]}
       >
         {item.description}
@@ -93,21 +88,22 @@ export default function App() {
       <FlatList
         data={tasks}
         renderItem={renderItem}
-        keyExtractor={(item) => item.key}
+        keyExtractor={(item) => item.id}
       />
-      
-      {/* Input box and button to add a new task */}
+
+      {/* Input for new task */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Add a new task"
+          placeholder="Enter task description"
           value={newTask}
           onChangeText={setNewTask}
-          onSubmitEditing={addTask} // Add task when Enter is pressed
         />
         <Button title="Add" onPress={addTask} />
       </View>
     </SafeAreaView>
   );
+}
+
 }
 
