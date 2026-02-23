@@ -1,6 +1,5 @@
-{
-  "dependencies": {
-    "@rneui/themed": "*",
-    "@rneui/base": "*"
-  }
+"homepage": "https://YOURUSERNAME.github.io/todo-app",
+"scripts": {
+  "predeploy": "expo build:web",
+  "deploy": "gh-pages -d web-build"
 }
