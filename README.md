@@ -1,11 +1,11 @@
 # Expo_Todo
 
 # Setup Instructions
-## Clone the repository
-## Run npm install
-## Run npm start
-## Open http://localhost:3000
+1. Clone the repository
+2. Run npm install
+3. Run npm start
+4. Open http://localhost:3000
 
 # Technologies Used
-## React
-## Git & GitHub
+- React
+- Git & GitHub
